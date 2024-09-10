@@ -1,0 +1,16 @@
+.create-title {
+    margin: 10px;
+}
+
+.create-title input {
+    width: 300px;
+}
+
+.create-content {
+    margin: 10px;
+}
+
+.create-content textarea {
+    height: 250px;
+    width: 300px;
+}

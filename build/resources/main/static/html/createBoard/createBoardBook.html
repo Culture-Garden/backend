@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>도서의 습작 글 쓰기</title>
+    <link rel="stylesheet" type="text/css" href="../../css/createBoard.css">
+</head>
+<body>
+    <header>
+        <h1>영화의 습작</h1>
+        <hr>
+        <p><strong>도서라는 교양 대한 만남의 장</strong></p>
+    </header>
+
+    <main>
+        <div class="create-title">
+            <label for="id-title">제목</label>
+            <br>
+            <input type="text" id="id-title" name="title" required>
+        </div>
+        <br>
+        <div class="create-content">
+            <label for="id-content">내용</label>
+            <br>
+            <textarea id="id-content" name="content" required></textarea>
+        </div>
+        <br>
+        <input type="file" id="id-img-src" name="img-src" accept="image/*" required multiple>
+
+        <button id="id-submit">등록</button>
+
+    </main>
+
+    <script src="../../js/createBoard.js"></script>
+</body>
+</html>
