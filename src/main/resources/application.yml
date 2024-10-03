@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url : jdbc:mysql://localhost:3306/bookBoard
+    url : jdbc:mysql://localhost:3306/culture
     username : root
-    password : 123456
+    password : 1234
   jpa:
     show-sql : true
     hibernate:
