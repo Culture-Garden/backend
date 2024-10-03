@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const $setTitle = document.querySelector('#id-title');
     const $setContent = document.querySelector('#id-content');
-    const $setCategory = document.querySelector('#id-category');
-    const $setImgSrc = document.querySelector('#id-img-src')
     const $submit = document.querySelector('#id-submit');
 
     $submit.addEventListener('click', event => {
@@ -11,14 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = {
             title: $setTitle.value,
             content: $setContent.value,
-            imgSrc: $setImgSrc.value
         };
 
-        // 선택된 카테고리 값에 맞춰 요청 경로 동적으로 설정
-        const category = $setCategory.value;
-        const apiUrl = `/board/${category}`;
-
-        fetch(apiUrl, {
+        fetch(`/board/movie`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 console.log(data);
                 alert("성공");
-                window.location.href = `../${category}.html`; // 성공 후 카테고리 페이지로 이동
+                window.location.href = `../movie.html`; // 성공 후 카테고리 페이지로 이동
             })
             .catch(error => {
                 console.error("Error:", error);
