@@ -22,7 +22,7 @@
 
     <div id="app">
         <section id="board-list" >
-                <a class="item" v-for="item in items" :href="`/board/movie/${item.id}`" :key="item.title">
+                <a class="item" v-for="item in items" :href="`/madeBoard/${item.id}`" :key="item.title">
                     <div class="image">
                         <img :src="item.imgSrc" alt="영화 관련 사진">
                     </div>
@@ -30,13 +30,13 @@
                         <div class="title-container">
                             <span class="title">{{ item.title }}</span>
                             <br>
-                            <div class="username-container">
-                                <span class="username">{{ item.username }}</span>
-                                <br>
-                            </div>
-                            <div class="day-container">
-                                <span class="create-day">{{ item.createdAt }}</span>
-                            </div>
+                        </div>
+                        <div class="username-container">
+                            <span class="username">{{ item.username }}</span>
+                            <br>
+                        </div>
+                        <div class="day-container">
+                            <span class="create-day">{{ item.createdAt }}</span>
                         </div>
                     </div>
                 </a>
@@ -44,7 +44,7 @@
     </div>
 </main>
 
-<script src="../js/movie.js"></script>
+<script src="../js/mainMovie.js"></script>
 
 </body>
 </html>

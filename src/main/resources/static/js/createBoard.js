@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 console.log(data);
                 alert("성공");
-                window.location.href = `../movie.html`; // 성공 후 카테고리 페이지로 이동
+                window.location.href = `../mainMovie.html`; // 성공 후 카테고리 페이지로 이동
             })
             .catch(error => {
                 console.error("Error:", error);

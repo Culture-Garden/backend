@@ -1,16 +1,14 @@
 const app = Vue.createApp({
     data() {
         return {
-            title: '',
-            content: ''
+            items: []
         };
     },
     mounted() {
          fetch('board/movie/1')
             .then(response => response.json())
             .then(data => {
-                 this.title = data.title;
-                 this.content = data.content;
+                 this.items = data;
              });
     }
 });
