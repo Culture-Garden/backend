@@ -1,6 +1,7 @@
 package jinbok.culture.board.domain;
 
 import jakarta.persistence.*;
+import jinbok.culture.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,9 +24,9 @@ public class Board extends TimeStamp{
     private String title;
     @Column
     private String content;
-    @Column
-    private String username;
-    @Column
-    private String imgSrc;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

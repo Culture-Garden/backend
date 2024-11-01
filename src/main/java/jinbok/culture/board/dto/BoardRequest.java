@@ -4,6 +4,5 @@ public record BoardRequest(
         String title,
         String content,
 
-        String imgSrc
-
+        Long userId
 ) {}
