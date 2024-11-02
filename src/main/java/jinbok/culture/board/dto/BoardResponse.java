@@ -9,11 +9,10 @@ import java.time.LocalDateTime;
 @Builder
 public record BoardResponse(
     Long id,
+    Long userId,
 
     String title,
     String content,
-
-    String imgSrc,
 
     LocalDateTime createdAt
 ) {
@@ -23,7 +22,6 @@ public record BoardResponse(
                 .id(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .imgSrc(board.getImgSrc())
                 .createdAt(board.getCreatedAt())
                 .build();
     }
