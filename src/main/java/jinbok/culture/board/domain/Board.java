@@ -1,6 +1,7 @@
 package jinbok.culture.board.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jinbok.culture.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,9 @@ public class Board extends TimeStamp{
     private Long id;
 
     @Column
+    @NotBlank(message = "제목은 반드시 작성해야합니다.")
     private String title;
+
     @Column
     private String content;
 

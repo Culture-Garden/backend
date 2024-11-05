@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public record BoardResponse(
     Long id,
-    Long userId,
+    String username,
 
     String title,
     String content,
@@ -20,6 +20,7 @@ public record BoardResponse(
 
         return BoardResponse.builder()
                 .id(board.getId())
+                .username(board.getUser().getUsername())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .createdAt(board.getCreatedAt())

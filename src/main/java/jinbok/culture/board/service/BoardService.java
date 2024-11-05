@@ -1,11 +1,14 @@
 package jinbok.culture.board.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jinbok.culture.board.domain.Board;
 import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.board.repository.BoardRepository;
 import jinbok.culture.user.domain.User;
 import jinbok.culture.user.repository.UserRepository;
+import jinbok.culture.user.service.AuthService;
 import jinbok.culture.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,10 +24,12 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     public final BoardRepository boardRepository;
+    public final AuthService authService;
 
-    public BoardResponse createBoard(BoardRequest boardRequest) {
+    public BoardResponse createBoard(BoardRequest boardRequest, Object object) {
 
         Board board = Board.builder()
+                .user((User) object)
                 .title(boardRequest.title())
                 .content(boardRequest.content())
                 .build();
@@ -44,7 +49,7 @@ public class BoardService {
 
     public BoardResponse findBoardById(Long id) {
         Board board = boardRepository.findById(id).orElse(null);
-        assert board != null : "해당 BoardId를 가진 사람이 없습니다.";
+        assert board != null : "해당 BoardId를 가진 보드는 없습니다.";
         return BoardResponse.toBoardResponse(board);
     }
 }
