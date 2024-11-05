@@ -1,5 +1,7 @@
 package jinbok.culture.user.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jinbok.culture.user.domain.User;
 import lombok.Builder;
 

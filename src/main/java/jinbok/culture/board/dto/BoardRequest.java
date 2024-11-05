@@ -2,7 +2,5 @@ package jinbok.culture.board.dto;
 
 public record BoardRequest(
         String title,
-        String content,
-
-        Long userId
+        String content
 ) {}

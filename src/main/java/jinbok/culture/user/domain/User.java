@@ -1,6 +1,7 @@
 package jinbok.culture.user.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jinbok.culture.board.domain.Board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,12 +23,15 @@ public class User {
     private Long id;
 
     @Column
+    @NotBlank(message = "ID는 반드시 작성하여야 합니다.")
     private String loginId;
 
     @Column
+    @NotBlank(message = "이름은 반드시 작성하여야 합니다.")
     private String username;
 
     @Column
+    @NotBlank(message = "비밀번호는 반드시 작성하여야 합니다.")
     private String password;
 
     @Column
