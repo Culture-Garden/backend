@@ -1,20 +1,14 @@
 package jinbok.culture.board.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.board.service.BoardService;
-import jinbok.culture.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/board")
