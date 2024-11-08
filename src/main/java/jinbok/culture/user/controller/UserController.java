@@ -1,5 +1,7 @@
 package jinbok.culture.user.controller;
 
+import jakarta.servlet.http.HttpSession;
+import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
 import jinbok.culture.user.service.UserService;
@@ -15,7 +17,22 @@ public class UserController {
     public final UserService userService;
 
     @GetMapping("/{id}")
-    public UserResponse findById(@PathVariable Long id) {
+    public UserResponse findByIdUserInfo(@PathVariable Long id) {
         return userService.findByLoginId(id);
+    }
+
+    @PutMapping("/{id}")
+    public UserResponse updateUserInfo(@PathVariable Long id, @RequestBody UserRequest userRequest, HttpSession session) {
+
+        User updatedUser = userService.updateUserInfo(id, userRequest);
+
+        session.setAttribute("user", updatedUser);
+
+        return UserResponse.toUserResponse(updatedUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUserInfo(@PathVariable Long id, HttpSession session) {
+        userService.deleteUserInfo(id,session);
     }
 }

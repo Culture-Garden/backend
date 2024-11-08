@@ -1,5 +1,6 @@
 package jinbok.culture.user.service;
 
+import jakarta.servlet.http.HttpSession;
 import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
@@ -21,9 +22,21 @@ public class UserService {
         return UserResponse.toUserResponse(userRepository.findById(id).orElseThrow());
     }
 
-    public UserResponse updateUserInfo(Long id, UserRequest userRequest) {
-        User user = userRepository.findById(id).orElseThrow();
+    public User updateUserInfo(Long Id, UserRequest userRequest) {
+        User user = userRepository.findById(Id).orElseThrow();
 
+        user.updateUserInfo(userRequest);
 
+        userRepository.save(user);
+
+        return user;
     }
+
+    public void deleteUserInfo(Long id, HttpSession session) {
+        User user = userRepository.findById(id).orElseThrow();
+        userRepository.delete(user);
+        session.invalidate();
+    }
+
+
 }
