@@ -22,6 +22,7 @@ public class BoardController {
     public BoardResponse createBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
 
         Object object = session.getAttribute("user");
+
         return boardService.createBoard(boardRequest, object);
     }
 

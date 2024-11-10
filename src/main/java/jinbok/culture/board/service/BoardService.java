@@ -1,15 +1,11 @@
 package jinbok.culture.board.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jinbok.culture.board.domain.Board;
 import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.board.repository.BoardRepository;
 import jinbok.culture.user.domain.User;
-import jinbok.culture.user.repository.UserRepository;
 import jinbok.culture.user.service.AuthService;
-import jinbok.culture.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
