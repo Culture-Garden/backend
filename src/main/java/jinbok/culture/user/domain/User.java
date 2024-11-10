@@ -3,6 +3,7 @@ package jinbok.culture.user.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jinbok.culture.board.domain.Board;
+import jinbok.culture.user.dto.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,4 +39,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> board = new ArrayList<>();
 
+    public void updateUserInfo(UserRequest userRequest) {
+        this.loginId = userRequest.loginId();
+        this.username = userRequest.username();
+        this.password = userRequest.password();
+    }
 }
