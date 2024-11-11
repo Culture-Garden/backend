@@ -43,33 +43,25 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    public List<BoardResponse> findBoardByUser(Object object) {
+    public BoardResponse findBoardById(Long id) {
 
-        User user = (User) object;
+        Board board = boardRepository.findById(id).orElseThrow();
 
-        List<Board> boards = boardRepository.findAllByUserId(user.getId());
-
-        return boards.stream()
-                .map(BoardResponse::toBoardResponse)
-                .collect(Collectors.toList());
+        return BoardResponse.toBoardResponse(board);
     }
 
-    public BoardResponse updateBoard(BoardRequest boardRequest, Object object) {
+    public BoardResponse updateBoard(Long id, BoardRequest boardRequest) {
 
-        User user = (User) object;
-
-        Board board = boardRepository.findById(user.getId()).orElseThrow();
+        Board board = boardRepository.findById(id).orElseThrow();
 
         board.updateBoard(boardRequest);
 
         return BoardResponse.toBoardResponse(board);
     }
 
-    public BoardResponse deleteBoard(Object object) {
+    public BoardResponse deleteBoard(Long id) {
 
-        User user = (User) object;
-
-        Board board = boardRepository.findById(user.getId()).orElseThrow();
+        Board board = boardRepository.findById(id).orElseThrow();
 
         boardRepository.delete(board);
 

@@ -31,28 +31,20 @@ public class BoardController {
         return boardService.findAllBoard();
     }
 
-    @GetMapping("/movie")
-    public List<BoardResponse> findBoardByUser(HttpSession Session) {
-
-        Object object = Session.getAttribute("user");
-
-        return boardService.findBoardByUser(object);
+    @GetMapping("/movie/{id}")
+    public BoardResponse findBoardById(@PathVariable Long id){
+        return boardService.findBoardById(id);
     }
 
-    @PutMapping("/movie")
-    public BoardResponse updateBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
+    @PutMapping("/movie/{id}")
+    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest){
 
-        Object object = session.getAttribute("user");
-
-        return boardService.updateBoard(boardRequest, object);
+        return boardService.updateBoard(id, boardRequest);
     }
 
-    @DeleteMapping("/movie")
-    public BoardResponse deleteBoardById(HttpSession session) {
-
-        Object object = session.getAttribute("user");
-
-        return boardService.deleteBoard(object);
+    @DeleteMapping("/movie/{id}")
+    public BoardResponse deleteBoardById(@PathVariable Long id) {
+        return boardService.deleteBoard(id);
     }
 
 
