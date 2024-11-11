@@ -43,9 +43,36 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    public BoardResponse findBoardById(Long id) {
-        Board board = boardRepository.findById(id).orElse(null);
-        assert board != null : "해당 BoardId를 가진 보드는 없습니다.";
+    public List<BoardResponse> findBoardByUser(Object object) {
+
+        User user = (User) object;
+
+        List<Board> boards = boardRepository.findAllByUserId(user.getId());
+
+        return boards.stream()
+                .map(BoardResponse::toBoardResponse)
+                .collect(Collectors.toList());
+    }
+
+    public BoardResponse updateBoard(BoardRequest boardRequest, Object object) {
+
+        User user = (User) object;
+
+        Board board = boardRepository.findById(user.getId()).orElseThrow();
+
+        board.updateBoard(boardRequest);
+
+        return BoardResponse.toBoardResponse(board);
+    }
+
+    public BoardResponse deleteBoard(Object object) {
+
+        User user = (User) object;
+
+        Board board = boardRepository.findById(user.getId()).orElseThrow();
+
+        boardRepository.delete(board);
+
         return BoardResponse.toBoardResponse(board);
     }
 }

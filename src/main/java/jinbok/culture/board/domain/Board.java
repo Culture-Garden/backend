@@ -2,6 +2,8 @@ package jinbok.culture.board.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jinbok.culture.board.dto.BoardRequest;
+import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,5 +33,10 @@ public class Board extends TimeStamp{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateBoard(BoardRequest boardRequest){
+        this.title = boardRequest.title();
+        this.content = boardRequest.content();
+    }
 
 }

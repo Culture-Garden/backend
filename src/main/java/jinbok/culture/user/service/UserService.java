@@ -22,7 +22,7 @@ public class UserService {
 
     public User updateUser(UserRequest userRequest, User user) {
 
-        user.updateUserInfo(userRequest);
+        user.updateUser(userRequest);
 
         userRepository.save(user);
 

@@ -26,14 +26,33 @@ public class BoardController {
         return boardService.createBoard(boardRequest, object);
     }
 
-    @GetMapping("/movie")
+    @GetMapping("/movie/all")
     public List<BoardResponse> findAllBoard() {
         return boardService.findAllBoard();
     }
 
-    @GetMapping("/movie/{id}")
-    public BoardResponse findBoardById(@PathVariable Long id) {
-        return boardService.findBoardById(id);
+    @GetMapping("/movie")
+    public List<BoardResponse> findBoardByUser(HttpSession Session) {
+
+        Object object = Session.getAttribute("user");
+
+        return boardService.findBoardByUser(object);
+    }
+
+    @PutMapping("/movie")
+    public BoardResponse updateBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
+
+        Object object = session.getAttribute("user");
+
+        return boardService.updateBoard(boardRequest, object);
+    }
+
+    @DeleteMapping("/movie")
+    public BoardResponse deleteBoardById(HttpSession session) {
+
+        Object object = session.getAttribute("user");
+
+        return boardService.deleteBoard(object);
     }
 
 
