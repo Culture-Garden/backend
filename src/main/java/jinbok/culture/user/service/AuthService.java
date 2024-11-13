@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.http.HttpRequest;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -20,6 +21,12 @@ public class AuthService {
     public final UserRepository userRepository;
 
     public UserResponse signUp(UserRequest userRequest) {
+
+        Optional<User> existingUser = userRepository.findByLoginId(userRequest.loginId());
+
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 loginId가 입력됨");
+        }
 
         User user = User.builder()
                 .loginId(userRequest.loginId())
