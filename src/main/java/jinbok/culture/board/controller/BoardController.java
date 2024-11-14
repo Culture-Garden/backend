@@ -26,14 +26,25 @@ public class BoardController {
         return boardService.createBoard(boardRequest, object);
     }
 
-    @GetMapping("/movie")
+    @GetMapping("/movie/all")
     public List<BoardResponse> findAllBoard() {
         return boardService.findAllBoard();
     }
 
     @GetMapping("/movie/{id}")
-    public BoardResponse findBoardById(@PathVariable Long id) {
+    public BoardResponse findBoardById(@PathVariable Long id){
         return boardService.findBoardById(id);
+    }
+
+    @PutMapping("/movie/{id}")
+    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest){
+
+        return boardService.updateBoard(id, boardRequest);
+    }
+
+    @DeleteMapping("/movie/{id}")
+    public BoardResponse deleteBoardById(@PathVariable Long id) {
+        return boardService.deleteBoard(id);
     }
 
 

@@ -44,8 +44,27 @@ public class BoardService {
     }
 
     public BoardResponse findBoardById(Long id) {
-        Board board = boardRepository.findById(id).orElse(null);
-        assert board != null : "해당 BoardId를 가진 보드는 없습니다.";
+
+        Board board = boardRepository.findById(id).orElseThrow();
+
+        return BoardResponse.toBoardResponse(board);
+    }
+
+    public BoardResponse updateBoard(Long id, BoardRequest boardRequest) {
+
+        Board board = boardRepository.findById(id).orElseThrow();
+
+        board.updateBoard(boardRequest);
+
+        return BoardResponse.toBoardResponse(board);
+    }
+
+    public BoardResponse deleteBoard(Long id) {
+
+        Board board = boardRepository.findById(id).orElseThrow();
+
+        boardRepository.delete(board);
+
         return BoardResponse.toBoardResponse(board);
     }
 }

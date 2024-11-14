@@ -39,7 +39,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> board = new ArrayList<>();
 
-    public void updateUserInfo(UserRequest userRequest) {
+    public void updateUser(UserRequest userRequest) {
         this.loginId = userRequest.loginId();
         this.username = userRequest.username();
         this.password = userRequest.password();
