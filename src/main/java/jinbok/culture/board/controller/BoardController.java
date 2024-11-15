@@ -37,8 +37,16 @@ public class BoardController {
     }
 
     @GetMapping()
-    public Page<BoardResponse> findBoardByTitle(@RequestParam(required = false) String title, Pageable pageable){
-        return boardService.findBoardByTitle(title,pageable);
+    public Page<BoardResponse> findBoardByTitle(@RequestParam(required = false) String title,
+                                                @RequestParam(required = false) String username,
+                                                Pageable pageable){
+        if (title != null) {
+            return boardService.findBoardByTitle(title, pageable);
+        } else if (username != null) {
+            return boardService.findBoardByUsername(username, pageable);
+        } else {
+            return boardService.findAllBoard(pageable);
+        }
     }
 
     @PutMapping("/{id}")
