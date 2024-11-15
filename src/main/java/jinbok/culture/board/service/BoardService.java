@@ -1,29 +1,31 @@
 package jinbok.culture.board.service;
 
 import jinbok.culture.board.domain.Board;
+import jinbok.culture.board.dto.BoardDetailResponse;
 import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.board.repository.BoardRepository;
+import jinbok.culture.comment.domain.Comment;
+import jinbok.culture.comment.dto.CommentResponse;
+import jinbok.culture.comment.service.CommentService;
 import jinbok.culture.user.domain.User;
-import jinbok.culture.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class BoardService {
 
+    public final CommentService commentService;
     public final BoardRepository boardRepository;
-    public final AuthService authService;
 
-    public BoardResponse createBoard(BoardRequest boardRequest, Object object) {
+    public BoardDetailResponse createBoard(BoardRequest boardRequest, Object object) {
 
         Board board = Board.builder()
                 .user((User) object)
@@ -33,7 +35,9 @@ public class BoardService {
 
         boardRepository.save(board);
 
-        return BoardResponse.toBoardResponse(board);
+        List<CommentResponse> comment = commentService.findAllCommentsByBoardId(board.getId());
+
+        return BoardDetailResponse.toBoardDetailResponse(board,comment);
     }
 
     public Page<BoardResponse> findAllBoard(Pageable pageable) {
@@ -42,10 +46,12 @@ public class BoardService {
         return boards.map(BoardResponse::toBoardResponse);
     }
 
-    public BoardResponse findBoardById(Long id) {
+    public BoardDetailResponse findBoardById(Long id) {
         Board board = boardRepository.findById(id).orElseThrow();
 
-        return BoardResponse.toBoardResponse(board);
+        List<CommentResponse> comment = commentService.findAllCommentsByBoardId(board.getId());
+
+        return BoardDetailResponse.toBoardDetailResponse(board,comment);
     }
 
     public Page<BoardResponse> findBoardByTitle(String title, Pageable pageable) {
@@ -76,5 +82,9 @@ public class BoardService {
         boardRepository.delete(board);
 
         return BoardResponse.toBoardResponse(board);
+    }
+
+    public Board getBoardId(Long id){
+        return boardRepository.findById(id).orElseThrow();
     }
 }
