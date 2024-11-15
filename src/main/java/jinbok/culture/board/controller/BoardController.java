@@ -6,19 +6,19 @@ import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/board/movie")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 public class BoardController {
 
     public final BoardService boardService;
 
-    @PostMapping("/movie")
+    @PostMapping()
     public BoardResponse createBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
 
         Object object = session.getAttribute("user");
@@ -26,23 +26,28 @@ public class BoardController {
         return boardService.createBoard(boardRequest, object);
     }
 
-    @GetMapping("/movie/all")
-    public List<BoardResponse> findAllBoard() {
-        return boardService.findAllBoard();
+    @GetMapping("/all")
+    public Page<BoardResponse> findAllBoard(Pageable pageable) {
+        return boardService.findAllBoard(pageable);
     }
 
-    @GetMapping("/movie/{id}")
+    @GetMapping("/{id}")
     public BoardResponse findBoardById(@PathVariable Long id){
         return boardService.findBoardById(id);
     }
 
-    @PutMapping("/movie/{id}")
+    @GetMapping()
+    public Page<BoardResponse> findBoardByTitle(@RequestParam(required = false) String title, Pageable pageable){
+        return boardService.findBoardByTitle(title,pageable);
+    }
+
+    @PutMapping("/{id}")
     public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest){
 
         return boardService.updateBoard(id, boardRequest);
     }
 
-    @DeleteMapping("/movie/{id}")
+    @DeleteMapping("/{id}")
     public BoardResponse deleteBoardById(@PathVariable Long id) {
         return boardService.deleteBoard(id);
     }

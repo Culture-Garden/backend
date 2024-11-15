@@ -7,13 +7,13 @@ import jinbok.culture.board.repository.BoardRepository;
 import jinbok.culture.user.domain.User;
 import jinbok.culture.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -35,19 +35,23 @@ public class BoardService {
         return BoardResponse.toBoardResponse(board);
     }
 
-    public List<BoardResponse> findAllBoard() {
-        List<Board> boards = boardRepository.findAll();
+    public Page<BoardResponse> findAllBoard(Pageable pageable) {
+        Page<Board> boards = boardRepository.findAllByOrderByIdDesc(pageable);
 
-        return boards.stream()
-                .map(BoardResponse::toBoardResponse)
-                .collect(Collectors.toList());
+        return boards.map(BoardResponse::toBoardResponse);
     }
 
     public BoardResponse findBoardById(Long id) {
-
         Board board = boardRepository.findById(id).orElseThrow();
 
         return BoardResponse.toBoardResponse(board);
+    }
+
+
+    public Page<BoardResponse> findBoardByTitle(String title, Pageable pageable) {
+        Page<Board> boards = boardRepository.findBoardsByTitleContaining(title, pageable);
+
+        return boards.map(BoardResponse::toBoardResponse);
     }
 
     public BoardResponse updateBoard(Long id, BoardRequest boardRequest) {
