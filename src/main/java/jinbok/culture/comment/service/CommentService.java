@@ -1,7 +1,5 @@
 package jinbok.culture.comment.service;
 
-import jinbok.culture.board.dto.BoardResponse;
-import jinbok.culture.board.service.BoardService;
 import jinbok.culture.comment.domain.Comment;
 import jinbok.culture.comment.dto.CommentRequest;
 import jinbok.culture.comment.dto.CommentResponse;

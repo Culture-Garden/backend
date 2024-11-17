@@ -21,7 +21,7 @@ public class Comment extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column
     private String content;

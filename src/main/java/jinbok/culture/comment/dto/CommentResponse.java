@@ -11,6 +11,7 @@ public record CommentResponse (
     String content,
 
     Long boardId,
+    String username,
     LocalDateTime createdAt
 ){
     public static CommentResponse toCommentResponse(Comment comment) {
@@ -18,6 +19,7 @@ public record CommentResponse (
                 .id(comment.getId())
                 .content(comment.getContent())
                 .boardId(comment.getBoardId())
+                .username(comment.getUser().getUsername())
                 .createdAt(comment.getCreatedAt())
                 .build();
     }
