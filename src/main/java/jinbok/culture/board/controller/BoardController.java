@@ -2,6 +2,7 @@ package jinbok.culture.board.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import jinbok.culture.board.dto.BoardDetailResponse;
 import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.board.service.BoardService;
@@ -19,7 +20,7 @@ public class BoardController {
     public final BoardService boardService;
 
     @PostMapping()
-    public BoardResponse createBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
+    public BoardDetailResponse createBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
 
         Object object = session.getAttribute("user");
 
@@ -32,7 +33,7 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public BoardResponse findBoardById(@PathVariable Long id){
+    public BoardDetailResponse findBoardById(@PathVariable Long id){
         return boardService.findBoardById(id);
     }
 
@@ -50,15 +51,15 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest){
+    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest, HttpSession session){
+        Object object = session.getAttribute("user");
 
-        return boardService.updateBoard(id, boardRequest);
+        return boardService.updateBoard(id, boardRequest, object);
     }
 
     @DeleteMapping("/{id}")
     public BoardResponse deleteBoardById(@PathVariable Long id) {
         return boardService.deleteBoard(id);
     }
-
 
 }
