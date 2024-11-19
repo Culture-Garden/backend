@@ -66,9 +66,13 @@ public class BoardService {
         return boards.map(BoardResponse::toBoardResponse);
     }
 
-    public BoardResponse updateBoard(Long id, BoardRequest boardRequest) {
+    public BoardResponse updateBoard(Long id, BoardRequest boardRequest, Object object) {
 
         Board board = boardRepository.findById(id).orElseThrow();
+
+        if (!board.getUser().getId().equals(((User) object).getId())) {
+            throw new IllegalArgumentException("옳지 않은 유저가 접근");
+        }
 
         board.updateBoard(boardRequest);
 

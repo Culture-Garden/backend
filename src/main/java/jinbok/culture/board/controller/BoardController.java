@@ -51,9 +51,10 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest){
+    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest, HttpSession session){
+        Object object = session.getAttribute("user");
 
-        return boardService.updateBoard(id, boardRequest);
+        return boardService.updateBoard(id, boardRequest, object);
     }
 
     @DeleteMapping("/{id}")

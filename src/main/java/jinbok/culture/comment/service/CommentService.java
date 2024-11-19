@@ -39,11 +39,15 @@ public class CommentService {
                 collect(Collectors.toList());
     }
 
-    public CommentResponse updateComment(Long boardId, Long commentId, CommentRequest commentRequest) {
+    public CommentResponse updateComment(Long boardId, Long commentId, CommentRequest commentRequest, Object object) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
 
         if (!comment.getBoardId().equals(boardId)) {
             throw new IllegalArgumentException("댓글이 옳지 않은 게시글에 존재");
+        }
+
+        if (!comment.getUser().getId().equals(((User) object).getId())) {
+            throw new IllegalArgumentException("옳지 않은 유저가 접근");
         }
 
         comment.updateComment(commentRequest);

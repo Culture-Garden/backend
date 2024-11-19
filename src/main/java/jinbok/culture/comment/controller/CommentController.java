@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comment/{boardId}")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 public class CommentController {
 
     private final CommentService commentService;
@@ -31,9 +32,11 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public CommentResponse updateComment(@PathVariable Long boardId, @PathVariable Long commentId,
-                                         @RequestBody CommentRequest commentRequest) {
+                                         @RequestBody CommentRequest commentRequest, HttpSession session) {
 
-        return commentService.updateComment(boardId, commentId, commentRequest);
+        Object object = session.getAttribute("user");
+
+        return commentService.updateComment(boardId, commentId, commentRequest, object);
     }
 
     @DeleteMapping("/{commentId}")
