@@ -7,6 +7,7 @@ import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
 import jinbok.culture.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

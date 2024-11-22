@@ -2,11 +2,15 @@ package jinbok.culture.user.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jinbok.culture.board.dto.BoardRequest;
+import jinbok.culture.exception.RestApiException;
+import jinbok.culture.exception.code.UserErrorCode;
 import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
 import jinbok.culture.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +49,4 @@ public class AuthService {
                 .filter(m -> m.getPassword().equals(userRequest.password()))
                 .orElseThrow();
     }
-
-
 }

@@ -5,9 +5,10 @@ import jinbok.culture.board.dto.BoardDetailResponse;
 import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.board.dto.BoardResponse;
 import jinbok.culture.board.repository.BoardRepository;
-import jinbok.culture.comment.domain.Comment;
 import jinbok.culture.comment.dto.CommentResponse;
 import jinbok.culture.comment.service.CommentService;
+import jinbok.culture.exception.RestApiException;
+import jinbok.culture.exception.code.UserErrorCode;
 import jinbok.culture.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -71,7 +72,7 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow();
 
         if (!board.getUser().getId().equals(((User) object).getId())) {
-            throw new IllegalArgumentException("옳지 않은 유저가 접근");
+            throw new RestApiException(UserErrorCode.INCORRECT_USER);
         }
 
         board.updateBoard(boardRequest);
