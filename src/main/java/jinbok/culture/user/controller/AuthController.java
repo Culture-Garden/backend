@@ -37,4 +37,5 @@ public class AuthController {
     public void logout(HttpSession session) {
         session.invalidate();
     }
+
 }

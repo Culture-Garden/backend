@@ -47,6 +47,6 @@ public class AuthService {
 
         return userRepository.findByLoginId(userRequest.loginId())
                 .filter(m -> m.getPassword().equals(userRequest.password()))
-                .orElseThrow();
+                .orElseThrow(() -> new RestApiException(UserErrorCode.INVALID_CREDENTIALS));
     }
 }

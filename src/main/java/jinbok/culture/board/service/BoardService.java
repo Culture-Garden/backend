@@ -72,7 +72,7 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow();
 
         if (!board.getUser().getId().equals(((User) object).getId())) {
-            throw new RestApiException(UserErrorCode.INCORRECT_USER);
+            throw new RestApiException(UserErrorCode.INVALID_CREDENTIALS);
         }
 
         board.updateBoard(boardRequest);

@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum UserErrorCode implements ErrorCode {
 
-    INCORRECT_USER(HttpStatus.FORBIDDEN, "권한이 있는 유저만 접근할 수 있습니다."),
+
+    INVALID_CREDENTIALS(HttpStatus.FORBIDDEN, "아이디 또는 비밀번호가 잘못되었습니다."),
     ;
 
     private final HttpStatus httpStatus;
