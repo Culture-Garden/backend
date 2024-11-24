@@ -24,13 +24,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public UserResponse login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
+    public Long login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
 
-        User user = authService.login(userRequest);
+        Long userId = authService.login(userRequest);
 
-        session.setAttribute("user", user);
+        session.setAttribute("userId", userId);
 
-        return UserResponse.toUserResponse(user);
+        return userId;
     }
 
     @PostMapping("/logout")
