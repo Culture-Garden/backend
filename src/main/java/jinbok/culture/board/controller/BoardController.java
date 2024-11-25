@@ -22,9 +22,9 @@ public class BoardController {
     @PostMapping()
     public BoardDetailResponse createBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
 
-        Object object = session.getAttribute("user");
+        Long userId = (Long) session.getAttribute("userId");
 
-        return boardService.createBoard(boardRequest, object);
+        return boardService.createBoard(boardRequest, userId);
     }
 
     @GetMapping("/all")
@@ -52,14 +52,15 @@ public class BoardController {
 
     @PutMapping("/{id}")
     public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest, HttpSession session){
-        Object object = session.getAttribute("user");
+        Long userId = (Long) session.getAttribute("userId");
 
-        return boardService.updateBoard(id, boardRequest, object);
+        return boardService.updateBoard(id, boardRequest, userId);
     }
 
     @DeleteMapping("/{id}")
-    public BoardResponse deleteBoardById(@PathVariable Long id) {
-        return boardService.deleteBoard(id);
+    public BoardResponse deleteBoardById(@PathVariable Long id, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        return boardService.deleteBoard(id, userId);
     }
 
 }

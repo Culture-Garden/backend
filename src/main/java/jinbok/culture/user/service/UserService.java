@@ -15,22 +15,29 @@ public class UserService {
 
     public final UserRepository userRepository;
 
-    public UserResponse getUser(User user) {
+    public UserResponse getUserToDto(Long userId) {
 
-        return UserResponse.toUserResponse(userRepository.findById(user.getId()).orElseThrow());
+        return UserResponse.toUserResponse(getUser(userId));
     }
 
-    public User updateUser(UserRequest userRequest, User user) {
+    public User getUser(Long userId){
+
+        return userRepository.findById(userId).orElseThrow();
+    }
+
+    public void updateUser(UserRequest userRequest, Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow();
 
         user.updateUser(userRequest);
 
         userRepository.save(user);
-
-        return user;
     }
 
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+    public void deleteUser(Long userId) {
+
+        userRepository.delete(userRepository.findById(userId).orElseThrow());
+
     }
 
 

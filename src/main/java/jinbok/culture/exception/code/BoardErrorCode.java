@@ -3,14 +3,13 @@ package jinbok.culture.exception.code;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @RequiredArgsConstructor
-public enum UserErrorCode implements ErrorCode {
+public enum BoardErrorCode implements ErrorCode {
 
-    INVALID_CREDENTIALS(HttpStatus.FORBIDDEN, "아이디 또는 비밀번호가 잘못됨"),
-    DUPLICATE_PARAMETER(HttpStatus.BAD_REQUEST, "중복된 아이디 존재"),
-    ;
+    INVALID_BOARD(HttpStatus.BAD_REQUEST,"요청된 글이 존재하지 않음");
 
     private final HttpStatus httpStatus;
     private final String message;

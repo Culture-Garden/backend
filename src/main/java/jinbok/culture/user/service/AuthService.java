@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jinbok.culture.board.dto.BoardRequest;
 import jinbok.culture.exception.RestApiException;
+import jinbok.culture.exception.code.CommonErrorCode;
 import jinbok.culture.exception.code.UserErrorCode;
 import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
@@ -29,7 +30,7 @@ public class AuthService {
         Optional<User> existingUser = userRepository.findByLoginId(userRequest.loginId());
 
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 loginId가 입력됨");
+            throw new RestApiException(UserErrorCode.DUPLICATE_PARAMETER);
         }
 
         User user = User.builder()

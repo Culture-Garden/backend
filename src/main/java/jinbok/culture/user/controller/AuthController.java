@@ -2,7 +2,6 @@ package jinbok.culture.user.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
 import jinbok.culture.user.service.AuthService;
@@ -24,13 +23,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Long login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
+    public ResponseEntity<String> login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
 
-        Long userId = authService.login(userRequest);
+        session.setAttribute("userId", authService.login(userRequest));
 
-        session.setAttribute("userId", userId);
-
-        return userId;
+        return ResponseEntity.ok("로그인 성공");
     }
 
     @PostMapping("/logout")

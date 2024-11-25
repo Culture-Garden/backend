@@ -8,8 +8,10 @@ import jinbok.culture.board.repository.BoardRepository;
 import jinbok.culture.comment.dto.CommentResponse;
 import jinbok.culture.comment.service.CommentService;
 import jinbok.culture.exception.RestApiException;
+import jinbok.culture.exception.code.BoardErrorCode;
 import jinbok.culture.exception.code.UserErrorCode;
 import jinbok.culture.user.domain.User;
+import jinbok.culture.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +27,12 @@ public class BoardService {
 
     public final CommentService commentService;
     public final BoardRepository boardRepository;
+    private final UserService userService;
 
-    public BoardDetailResponse createBoard(BoardRequest boardRequest, Object object) {
+    public BoardDetailResponse createBoard(BoardRequest boardRequest, Long userId) {
 
         Board board = Board.builder()
-                .user((User) object)
+                .user(userService.getUser(userId))
                 .title(boardRequest.title())
                 .content(boardRequest.content())
                 .build();
@@ -67,11 +70,11 @@ public class BoardService {
         return boards.map(BoardResponse::toBoardResponse);
     }
 
-    public BoardResponse updateBoard(Long id, BoardRequest boardRequest, Object object) {
+    public BoardResponse updateBoard(Long id, BoardRequest boardRequest, Long userId) {
 
-        Board board = boardRepository.findById(id).orElseThrow();
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RestApiException(BoardErrorCode.INVALID_BOARD));
 
-        if (!board.getUser().getId().equals(((User) object).getId())) {
+        if (!board.getUser().getId().equals(userId)) {
             throw new RestApiException(UserErrorCode.INVALID_CREDENTIALS);
         }
 
@@ -80,16 +83,16 @@ public class BoardService {
         return BoardResponse.toBoardResponse(board);
     }
 
-    public BoardResponse deleteBoard(Long id) {
+    public BoardResponse deleteBoard(Long id, Long userId) {
 
-        Board board = boardRepository.findById(id).orElseThrow();
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RestApiException(BoardErrorCode.INVALID_BOARD));
+
+        if (!board.getUser().getId().equals(userId)) {
+            throw new RestApiException(UserErrorCode.INVALID_CREDENTIALS);
+        }
 
         boardRepository.delete(board);
 
         return BoardResponse.toBoardResponse(board);
-    }
-
-    public Board getBoardId(Long id){
-        return boardRepository.findById(id).orElseThrow();
     }
 }
