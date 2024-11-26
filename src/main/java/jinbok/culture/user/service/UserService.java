@@ -1,5 +1,7 @@
 package jinbok.culture.user.service;
 
+import jinbok.culture.exception.RestApiException;
+import jinbok.culture.exception.code.UserErrorCode;
 import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
@@ -22,12 +24,12 @@ public class UserService {
 
     public User getUser(Long userId){
 
-        return userRepository.findById(userId).orElseThrow();
+        return userRepository.findById(userId).orElseThrow(() -> new RestApiException(UserErrorCode.INVALID_USER));
     }
 
     public void updateUser(UserRequest userRequest, Long userId) {
 
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = getUser(userId);
 
         user.updateUser(userRequest);
 
@@ -36,7 +38,8 @@ public class UserService {
 
     public void deleteUser(Long userId) {
 
-        userRepository.delete(userRepository.findById(userId).orElseThrow());
+        userRepository.delete(userRepository.findById(userId)
+                .orElseThrow(() -> new RestApiException(UserErrorCode.INVALID_USER)));
 
     }
 

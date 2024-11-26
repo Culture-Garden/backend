@@ -18,16 +18,18 @@ public class AuthController {
     public final AuthService authService;
 
     @PostMapping("/signUp")
-    public UserResponse singUp(@Valid @RequestBody UserRequest userRequest) {
-        return authService.signUp(userRequest);
+    public ResponseEntity<UserResponse> singUp(@Valid @RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(authService.signUp(userRequest));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
 
-        session.setAttribute("userId", authService.login(userRequest));
+        UserResponse userResponse = authService.login(userRequest);
 
-        return ResponseEntity.ok("로그인 성공");
+        session.setAttribute("userId", userResponse.id());
+
+        return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/logout")

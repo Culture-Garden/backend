@@ -37,14 +37,16 @@ public class CommentService {
     }
 
     public List<CommentResponse> findAllCommentsByBoardId(Long boardId) {
-        List<Comment> comment = commentRepository.findAllByBoardId(boardId);
-        return comment.stream().
-                map(CommentResponse::toCommentResponse).
-                collect(Collectors.toList());
+        List<Comment> comment = commentRepository.findAllByBoardId(boardId)
+                .orElseThrow(() -> new RestApiException(CommentErrorCode.INVALID_BOARD));
+
+        return comment.stream()
+                .map(CommentResponse::toCommentResponse)
+                .collect(Collectors.toList());
     }
 
     public CommentResponse updateComment(Long boardId, Long commentId, CommentRequest commentRequest, Long userId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        Comment comment = findCommentById(commentId);
 
         if (!comment.getBoardId().equals(boardId)) {
             throw new RestApiException(CommentErrorCode.INVALID_BOARD);
@@ -61,8 +63,7 @@ public class CommentService {
 
     public CommentResponse deleteComment(Long boardId, Long commentId, Long userId) {
 
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new RestApiException(CommentErrorCode.INVALID_COMMENT));
+        Comment comment = findCommentById(commentId);
 
         if (!comment.getBoardId().equals(boardId)) {
             throw new RestApiException(CommentErrorCode.INVALID_BOARD);
@@ -75,6 +76,11 @@ public class CommentService {
         commentRepository.delete(comment);
 
         return CommentResponse.toCommentResponse(comment);
+    }
+
+    private Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new RestApiException(CommentErrorCode.INVALID_COMMENT));
     }
 
 }

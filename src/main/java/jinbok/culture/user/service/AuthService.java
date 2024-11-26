@@ -44,12 +44,12 @@ public class AuthService {
         return UserResponse.toUserResponse(user);
     }
 
-    public Long login(UserRequest userRequest) {
+    public UserResponse login(UserRequest userRequest) {
 
         User user = userRepository.findByLoginId(userRequest.loginId())
                 .filter(m -> m.getPassword().equals(userRequest.password()))
                 .orElseThrow(() -> new RestApiException(UserErrorCode.INVALID_CREDENTIALS));
 
-        return user.getId();
+        return UserResponse.toUserResponse(user);
     }
 }

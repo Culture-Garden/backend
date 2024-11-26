@@ -51,7 +51,7 @@ public class BoardService {
     }
 
     public BoardDetailResponse findBoardById(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow();
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RestApiException(BoardErrorCode.INVALID_BOARD));
 
         List<CommentResponse> comment = commentService.findAllCommentsByBoardId(board.getId());
 
