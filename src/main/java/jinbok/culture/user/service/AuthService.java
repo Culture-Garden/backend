@@ -2,11 +2,16 @@ package jinbok.culture.user.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jinbok.culture.board.dto.BoardRequest;
+import jinbok.culture.exception.RestApiException;
+import jinbok.culture.exception.code.CommonErrorCode;
+import jinbok.culture.exception.code.UserErrorCode;
 import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
 import jinbok.culture.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +30,7 @@ public class AuthService {
         Optional<User> existingUser = userRepository.findByLoginId(userRequest.loginId());
 
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 loginId가 입력됨");
+            throw new RestApiException(UserErrorCode.DUPLICATE_PARAMETER);
         }
 
         User user = User.builder()
@@ -39,12 +44,12 @@ public class AuthService {
         return UserResponse.toUserResponse(user);
     }
 
-    public User login(UserRequest userRequest) {
+    public UserResponse login(UserRequest userRequest) {
 
-        return userRepository.findByLoginId(userRequest.loginId())
+        User user = userRepository.findByLoginId(userRequest.loginId())
                 .filter(m -> m.getPassword().equals(userRequest.password()))
-                .orElseThrow();
+                .orElseThrow(() -> new RestApiException(UserErrorCode.INVALID_CREDENTIALS));
+
+        return UserResponse.toUserResponse(user);
     }
-
-
 }

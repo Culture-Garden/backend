@@ -20,9 +20,9 @@ public class CommentController {
     @PostMapping
     public CommentResponse createComment(@PathVariable Long boardId, @RequestBody CommentRequest commentRequest, HttpSession session) {
 
-        Object object = session.getAttribute("user");
+        Long userId = (Long) session.getAttribute("userId");
 
-        return commentService.createComment(boardId, commentRequest, object);
+        return commentService.createComment(boardId, commentRequest, userId);
     }
 
     @GetMapping
@@ -34,14 +34,16 @@ public class CommentController {
     public CommentResponse updateComment(@PathVariable Long boardId, @PathVariable Long commentId,
                                          @RequestBody CommentRequest commentRequest, HttpSession session) {
 
-        Object object = session.getAttribute("user");
+        Long userId = (Long) session.getAttribute("userId");
 
-        return commentService.updateComment(boardId, commentId, commentRequest, object);
+        return commentService.updateComment(boardId, commentId, commentRequest, userId);
     }
 
     @DeleteMapping("/{commentId}")
-    public CommentResponse deleteComment(@PathVariable Long boardId, @PathVariable Long commentId) {
-        return commentService.deleteComment(boardId, commentId);
+    public CommentResponse deleteComment(@PathVariable Long boardId, @PathVariable Long commentId, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+
+        return commentService.deleteComment(boardId, commentId, userId);
     }
 
 }

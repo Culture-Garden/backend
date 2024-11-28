@@ -2,11 +2,11 @@ package jinbok.culture.user.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jinbok.culture.user.domain.User;
 import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
 import jinbok.culture.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,22 +18,23 @@ public class AuthController {
     public final AuthService authService;
 
     @PostMapping("/signUp")
-    public UserResponse singUp(@Valid @RequestBody UserRequest userRequest) {
-        return authService.signUp(userRequest);
+    public ResponseEntity<UserResponse> singUp(@Valid @RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(authService.signUp(userRequest));
     }
 
     @PostMapping("/login")
-    public UserResponse login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody UserRequest userRequest, HttpSession session) {
 
-        User user = authService.login(userRequest);
+        UserResponse userResponse = authService.login(userRequest);
 
-        session.setAttribute("user", user);
+        session.setAttribute("userId", userResponse.id());
 
-        return UserResponse.toUserResponse(user);
+        return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/logout")
     public void logout(HttpSession session) {
         session.invalidate();
     }
+
 }

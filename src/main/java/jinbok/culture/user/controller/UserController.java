@@ -6,6 +6,7 @@ import jinbok.culture.user.dto.UserRequest;
 import jinbok.culture.user.dto.UserResponse;
 import jinbok.culture.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,29 +20,28 @@ public class UserController {
     @GetMapping
     public UserResponse getUser(HttpSession session) {
 
-        User userInfo = (User) session.getAttribute("user");
+        Long userId = (Long) session.getAttribute("userId");
 
-        return userService.getUser(userInfo);
+        return userService.getUserToDto(userId);
     }
 
     @PutMapping
-    public UserResponse updateUser(@RequestBody UserRequest userRequest, HttpSession session) {
+    public ResponseEntity<String> updateUser(@RequestBody UserRequest userRequest, HttpSession session) {
 
-        User userInfo = (User) session.getAttribute("user");
+        Long userId = (Long) session.getAttribute("userId");
 
-        User updatedUser = userService.updateUser(userRequest, userInfo);
+        userService.updateUser(userRequest, userId);
 
-        session.setAttribute("user", updatedUser);
-
-        return UserResponse.toUserResponse(updatedUser);
+        return ResponseEntity.ok("사용자 정보 수정 완료");
     }
 
     @DeleteMapping
     public void deleteUser(HttpSession session) {
-        User userInfo = (User) session.getAttribute("user");
 
-        userService.deleteUser(userInfo);
+        Long userId = (Long) session.getAttribute("userId");
 
-        session.removeAttribute("user");
+        userService.deleteUser(userId);
+
+        session.removeAttribute("userId");
     }
 }
