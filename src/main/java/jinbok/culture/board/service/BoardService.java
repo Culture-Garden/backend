@@ -10,7 +10,6 @@ import jinbok.culture.comment.service.CommentService;
 import jinbok.culture.exception.RestApiException;
 import jinbok.culture.exception.code.BoardErrorCode;
 import jinbok.culture.exception.code.UserErrorCode;
-import jinbok.culture.user.domain.User;
 import jinbok.culture.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,8 +49,8 @@ public class BoardService {
         return boards.map(BoardResponse::toBoardResponse);
     }
 
-    public BoardDetailResponse findBoardById(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new RestApiException(BoardErrorCode.INVALID_BOARD));
+    public BoardDetailResponse findBoardByIdToDto(Long id) {
+        Board board = findBoardById(id);
 
         List<CommentResponse> comment = commentService.findAllCommentsByBoardId(board.getId());
 
@@ -75,7 +74,7 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(() -> new RestApiException(BoardErrorCode.INVALID_BOARD));
 
         if (!board.getUser().getId().equals(userId)) {
-            throw new RestApiException(UserErrorCode.INVALID_CREDENTIALS);
+            throw new RestApiException(BoardErrorCode.INVALID_USER);
         }
 
         board.updateBoard(boardRequest);
@@ -88,11 +87,15 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(() -> new RestApiException(BoardErrorCode.INVALID_BOARD));
 
         if (!board.getUser().getId().equals(userId)) {
-            throw new RestApiException(UserErrorCode.INVALID_CREDENTIALS);
+            throw new RestApiException(BoardErrorCode.INVALID_USER);
         }
 
         boardRepository.delete(board);
 
         return BoardResponse.toBoardResponse(board);
+    }
+
+    public Board findBoardById(Long boardId){
+        return boardRepository.findById(boardId).orElseThrow(() -> new RestApiException(BoardErrorCode.INVALID_BOARD));
     }
 }
