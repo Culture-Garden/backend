@@ -2,6 +2,7 @@ package jinbok.culture.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +58,15 @@ public class S3Service {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
         return s3Client.getUrl(bucket, fileName).toString();
+    }
+
+    public void deleteS3(String fileName) {
+        try {
+            s3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
+            log.info("S3에서 파일 삭제 성공: {}", fileName);
+        } catch (Exception e) {
+            log.error("S3에서 파일 삭제 실패: {}", fileName, e);
+        }
     }
 
     private void removeNewFile(File targetFile) {

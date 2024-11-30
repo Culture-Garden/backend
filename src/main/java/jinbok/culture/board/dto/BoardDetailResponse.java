@@ -14,6 +14,7 @@ public record BoardDetailResponse (
 
     String title,
     String content,
+    String imageUrl,
 
     LocalDateTime createdAt,
     List<CommentResponse> comments
@@ -25,6 +26,7 @@ public record BoardDetailResponse (
                 .username(board.getUser().getUsername())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .imageUrl(board.getImageUrl())
                 .createdAt(board.getCreatedAt())
                 .comments(comments)
                 .build();

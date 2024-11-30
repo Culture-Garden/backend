@@ -12,6 +12,7 @@ public record BoardResponse(
 
     String title,
     String content,
+    String imageUrl,
 
     LocalDateTime createdAt
 ) {
@@ -22,6 +23,7 @@ public record BoardResponse(
                 .username(board.getUser().getUsername())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .imageUrl(board.getImageUrl())
                 .createdAt(board.getCreatedAt())
                 .build();
     }
