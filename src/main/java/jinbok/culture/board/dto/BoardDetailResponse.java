@@ -26,7 +26,7 @@ public record BoardDetailResponse (
                 .username(board.getUser().getUsername())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .imageUrl(board.getImageUrl())
+                .imageUrl(board.getImage())
                 .createdAt(board.getCreatedAt())
                 .comments(comments)
                 .build();

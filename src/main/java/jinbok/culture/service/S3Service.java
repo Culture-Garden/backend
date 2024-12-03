@@ -37,6 +37,7 @@ public class S3Service {
         String fileName = dirName + "/" + randomName;
 
         try {
+            log.info("만들어진 사진의 경로 {}", fileName);
             return putS3(uploadFile, fileName);
         } finally {
             removeNewFile(uploadFile);
@@ -64,7 +65,10 @@ public class S3Service {
 
     public void deleteS3(String fileName) {
         try {
-            s3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
+            String splitStr = ".com/";
+            String realFilename = fileName.substring(fileName.lastIndexOf(splitStr) + splitStr.length());
+
+            s3Client.deleteObject(new DeleteObjectRequest(bucket, realFilename));
             log.info("S3에서 파일 삭제 성공: {}", fileName);
         } catch (Exception e) {
             log.error("S3에서 파일 삭제 실패: {}", fileName, e);

@@ -14,6 +14,7 @@ import jinbok.culture.exception.code.UserErrorCode;
 import jinbok.culture.service.S3Service;
 import jinbok.culture.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
     public final CommentService commentService;
@@ -40,7 +42,7 @@ public class BoardService {
                 .user(userService.getUser(userId))
                 .title(boardRequest.title())
                 .content(boardRequest.content())
-                .imageUrl(s3Service.upload(image,"BoardImage"))
+                .image(s3Service.upload(image,"BoardImage"))
                 .build();
 
         boardRepository.save(board);
@@ -97,9 +99,11 @@ public class BoardService {
             throw new RestApiException(BoardErrorCode.INVALID_USER);
         }
 
-        String ImageUrl = board.getImageUrl();
+        String imageUrl = board.getImage();
 
-        s3Service.deleteS3(Optional.ofNullable(ImageUrl)
+        log.info("삭제하려고 하는 사진의 경로 : {}", imageUrl);
+
+        s3Service.deleteS3(Optional.ofNullable(imageUrl)
                 .orElseThrow(() -> new RestApiException(S3ErrorCode.INVALID_IMAGE)));
 
         boardRepository.delete(board);

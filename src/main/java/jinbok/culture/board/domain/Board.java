@@ -30,16 +30,16 @@ public class Board extends TimeStamp{
     private String content;
 
     @Column
-    private String imageUrl;
+    private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateBoard(BoardRequest boardRequest, String imageUrl){
+    public void updateBoard(BoardRequest boardRequest, String image){
         this.title = boardRequest.title();
         this.content = boardRequest.content();
-        this.imageUrl = imageUrl;
+        this.image = image;
     }
 
 }

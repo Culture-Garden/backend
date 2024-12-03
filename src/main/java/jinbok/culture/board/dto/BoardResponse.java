@@ -23,7 +23,7 @@ public record BoardResponse(
                 .username(board.getUser().getUsername())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .imageUrl(board.getImageUrl())
+                .imageUrl(board.getImage())
                 .createdAt(board.getCreatedAt())
                 .build();
     }
