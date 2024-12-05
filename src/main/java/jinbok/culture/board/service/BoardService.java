@@ -86,6 +86,8 @@ public class BoardService {
             throw new RestApiException(BoardErrorCode.INVALID_USER);
         }
 
+        s3Service.deleteS3(board.getImage());
+
         board.updateBoard(boardRequest, s3Service.upload(image, "BoardImage"));
 
         return BoardResponse.toBoardResponse(board);
@@ -99,11 +101,9 @@ public class BoardService {
             throw new RestApiException(BoardErrorCode.INVALID_USER);
         }
 
-        String imageUrl = board.getImage();
+        log.info("삭제하려고 하는 사진의 경로 : {}", board.getImage());
 
-        log.info("삭제하려고 하는 사진의 경로 : {}", imageUrl);
-
-        s3Service.deleteS3(Optional.ofNullable(imageUrl)
+        s3Service.deleteS3(Optional.ofNullable(board.getImage())
                 .orElseThrow(() -> new RestApiException(S3ErrorCode.INVALID_IMAGE)));
 
         boardRepository.delete(board);
