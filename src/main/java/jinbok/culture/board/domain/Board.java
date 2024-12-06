@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Getter
@@ -28,13 +29,17 @@ public class Board extends TimeStamp{
     @Column
     private String content;
 
+    @Column
+    private String image;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateBoard(BoardRequest boardRequest){
+    public void updateBoard(BoardRequest boardRequest, String image){
         this.title = boardRequest.title();
         this.content = boardRequest.content();
+        this.image = image;
     }
 
 }

@@ -9,7 +9,11 @@ import jinbok.culture.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/board/movie")
@@ -19,12 +23,13 @@ public class BoardController {
 
     public final BoardService boardService;
 
-    @PostMapping()
-    public BoardDetailResponse createBoard(@Valid @RequestBody BoardRequest boardRequest, HttpSession session){
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public BoardDetailResponse createBoard(@Valid @RequestPart BoardRequest boardRequest,
+                                           @RequestPart MultipartFile image, HttpSession session) throws IOException {
 
         Long userId = (Long) session.getAttribute("userId");
 
-        return boardService.createBoard(boardRequest, userId);
+        return boardService.createBoard(boardRequest, image, userId);
     }
 
     @GetMapping("/all")
@@ -51,10 +56,11 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody BoardRequest boardRequest, HttpSession session){
+    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestPart BoardRequest boardRequest,
+                                     @RequestPart MultipartFile image, HttpSession session) throws IOException {
         Long userId = (Long) session.getAttribute("userId");
 
-        return boardService.updateBoard(id, boardRequest, userId);
+        return boardService.updateBoard(id, boardRequest, image, userId);
     }
 
     @DeleteMapping("/{id}")
