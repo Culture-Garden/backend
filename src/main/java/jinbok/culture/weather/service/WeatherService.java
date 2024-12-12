@@ -1,10 +1,13 @@
 package jinbok.culture.weather.service;
 
+import jinbok.culture.weather.dto.WeatherResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -14,15 +17,20 @@ public class WeatherService {
     @Value("${externalApi.weather.authKey}")
     private String authKey;
 
-    public Mono<String> getWeatherData(String baseDate, String baseTime, int nx, int ny) {
-        // API URL과 파라미터들을 동적으로 설정
-        String url = String.format("?pageNo=1&numOfRows=1000&dataType=JSON&base_date=%s&base_time=%s&nx=%d&ny=%d&authKey=%s",
-                baseDate, baseTime, nx, ny, authKey);
-
-        // WebClient를 사용하여 GET 요청을 보냄
+    public Mono<List<WeatherResponse.Item>> getWeatherData(String baseDate, String baseTime, int nx, int ny) {
         return webClient.get()
-                .uri(url)  // URL에 파라미터 추가
-                .retrieve()  // 응답을 받음
-                .bodyToMono(String.class);  // 응답 본문을 String으로 변환
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("pageNo", 1)
+                        .queryParam("numOfRows", 1000)
+                        .queryParam("dataType", "JSON")
+                        .queryParam("base_date", baseDate)
+                        .queryParam("base_time", baseTime)
+                        .queryParam("nx", nx)
+                        .queryParam("ny", ny)
+                        .queryParam("authKey", authKey)
+                        .build())
+                .retrieve()
+                .bodyToMono(WeatherResponse.class)
+                .map(weatherResponse -> weatherResponse.response().body().items().item());
     }
 }
