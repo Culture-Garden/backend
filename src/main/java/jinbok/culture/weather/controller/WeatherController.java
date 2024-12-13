@@ -3,10 +3,7 @@ package jinbok.culture.weather.controller;
 import jinbok.culture.weather.dto.WeatherResponse;
 import jinbok.culture.weather.service.WeatherService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/weather")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true") // 특정 출처 허용 및 자격 증명 허용
 public class WeatherController {
 
     private final WeatherService weatherService;

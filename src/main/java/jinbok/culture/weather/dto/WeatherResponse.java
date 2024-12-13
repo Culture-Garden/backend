@@ -13,11 +13,7 @@ public record WeatherResponse(
     public record ItemList(List<Item> item) {}
 
     public record Item(
-            String baseDate,
-            String baseTime,
             String category,
-            int nx,
-            int ny,
             String obsrValue
     ) {}
 }
