@@ -19,8 +19,8 @@ public class WeatherController {
     @GetMapping()
     public Mono<List<WeatherResponse.Item>> getWeather(@RequestParam String baseDate,
                                                        @RequestParam String baseTime,
-                                                       @RequestParam int nx,
-                                                       @RequestParam int ny) {
+                                                       @RequestParam Long nx,
+                                                       @RequestParam Long ny) {
         return weatherService.getWeatherData(baseDate, baseTime, nx, ny);
     }
 }

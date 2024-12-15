@@ -17,7 +17,7 @@ public class WeatherService {
     @Value("${externalApi.weather.authKey}")
     private String authKey;
 
-    public Mono<List<WeatherResponse.Item>> getWeatherData(String baseDate, String baseTime, int nx, int ny) {
+    public Mono<List<WeatherResponse.Item>> getWeatherData(String baseDate, String baseTime, Long nx, Long ny) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("pageNo", 1)
