@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public class S3Service {
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(System.getProperty("java.io.tmpdir"), file.getOriginalFilename());
+        File convertFile = new File(System.getProperty("java.io.tmpdir"), Objects.requireNonNull(file.getOriginalFilename()));
 
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
