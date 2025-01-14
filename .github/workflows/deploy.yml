@@ -10,25 +10,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: load file in github repository
+      - name: Load a file from github repository
         uses: actions/checkout@v4
 
-      - name: install JDK 17
+      - name: Install JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: make application-dev.yml
+      - name: Make application-dev.yml
         run: echo "${{secrets.APPLICATION_PROPERTIES}}" > src/main/resources/application-dev.yml
 
-      - name: test and build
+      - name: Test and build
         run: ./gradlew clean build
 
-      - name: change built file name
+      - name: Change built file name
         run: mv ./build/libs/*SNAPSHOT.jar ./project.jar
 
-      - name: send built file to EC2 with SCP
+      - name: Compress
+        run: tar -czvf $GITHUB_SHA.tar.gz project.jar appspec.yml scripts
+
+      - name: Configure AWS credentials for connecting AWS resource
+        run: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-northeast-2
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+
+      - name: Upload project folder to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://jinbok-culture/$GITHUB_SHA.tar.gz
+
+      - name: Deploy project code to EC2 with Code Deploy
+        run: aws deploy create-deployment
+          --application-name culture
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name Production
+          --s3-location bucket=jinbok-culture,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+
+      - name: Send built file to EC2 via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{secrets.EC2_HOST}}
@@ -38,7 +58,7 @@ jobs:
           target: /home/ubuntu/backend/tobe
 
 
-      - name: Connect to EC2 with SSH
+      - name: Connect to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{secrets.EC2_HOST}}
