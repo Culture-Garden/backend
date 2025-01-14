@@ -39,11 +39,11 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
 
       - name: Upload project folder to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://jinbok-culture/$GITHUB_SHA.tar.gz
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://jiinbok-culture/$GITHUB_SHA.tar.gz
 
       - name: Command to deploy project code to EC2 with Code Deploy
         run: aws deploy create-deployment
           --application-name culture
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name Production
-          --s3-location bucket=jinbok-culture,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+          --s3-location bucket=jiinbok-culture,bundleType=tgz,key=$GITHUB_SHA.tar.gz
