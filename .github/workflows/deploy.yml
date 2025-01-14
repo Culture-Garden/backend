@@ -41,35 +41,9 @@ jobs:
       - name: Upload project folder to S3
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://jinbok-culture/$GITHUB_SHA.tar.gz
 
-      - name: Deploy project code to EC2 with Code Deploy
+      - name: Command to deploy project code to EC2 with Code Deploy
         run: aws deploy create-deployment
           --application-name culture
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name Production
           --s3-location bucket=jinbok-culture,bundleType=tgz,key=$GITHUB_SHA.tar.gz
-
-      - name: Send built file to EC2 via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{secrets.EC2_HOST}}
-          username: ${{secrets.EC2_USERNAME}}
-          key: ${{secrets.EC2_PRIVATE_KEY}}
-          source: project.jar
-          target: /home/ubuntu/backend/tobe
-
-
-      - name: Connect to EC2 via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{secrets.EC2_HOST}}
-          username: ${{secrets.EC2_USERNAME}}
-          key: ${{secrets.EC2_PRIVATE_KEY}}
-          script_stop: true
-          script: |
-            rm -rf /home/ubuntu/backend/current
-            mkdir /home/ubuntu/backend/current
-            mv /home/ubuntu/backend/tobe/project.jar /home/ubuntu/backend/current/project.jar
-            cd /home/ubuntu/backend/current
-            sudo fuser -k -n tcp 8080 || true
-            nohup java -jar project.jar > ./output.log 2>&1 &
-            rm -rf /home/ubuntu/backend/tobe
