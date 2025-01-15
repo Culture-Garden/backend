@@ -19,8 +19,8 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Make application-dev.yml
-        run: echo "${{secrets.APPLICATION_PROPERTIES}}" > src/main/resources/application-dev.yml
+      - name: Make application.yml
+        run: echo "${{secrets.APPLICATION_PROPERTIES}}" > src/main/resources/application.yml
 
       - name: Test and build
         run: ./gradlew clean build
