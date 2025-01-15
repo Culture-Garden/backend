@@ -38,7 +38,7 @@ jobs:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
 
-      - name: Upload project folder to S3
+      - name: Upload project folder to S3 
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://jiinbok-culture/$GITHUB_SHA.tar.gz
 
       - name: Command to deploy project code to EC2 with Code Deploy
