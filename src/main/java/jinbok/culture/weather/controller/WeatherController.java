@@ -11,12 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/weather")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true") // 특정 출처 허용 및 자격 증명 허용
+@CrossOrigin(origins = {"http://localhost:80", "http://localhost:8080"}, allowCredentials = "true")
 public class WeatherController {
 
     private final WeatherService weatherService;
 
-    @GetMapping()
+    @GetMapping
     public Mono<List<WeatherResponse.Item>> getWeather(@RequestParam String baseDate,
                                                        @RequestParam String baseTime,
                                                        @RequestParam Long nx,

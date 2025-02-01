@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comment/{boardId}")
-@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:80", "http://localhost:8080"}, allowCredentials = "true")
 public class CommentController {
 
     private final CommentService commentService;
