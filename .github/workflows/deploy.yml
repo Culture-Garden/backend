@@ -38,12 +38,28 @@ jobs:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
 
-      - name: Upload project folder to S3 
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://jiinbok-culture/$GITHUB_SHA.tar.gz
+      - name: ECR에 로그인하기
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Command to deploy project code to EC2 with Code Deploy
-        run: aws deploy create-deployment
-          --application-name culture
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name Production
-          --s3-location bucket=jiinbok-culture,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+      - name: Docker 이미지 생성
+        run: docker build -t instagram-server .
+
+      - name: Docker 이미지에 Tag 붙이기
+        run: docker tag culture-server ${{ steps.login-ecr.outputs.registry }}/culture-server:latest
+
+      - name: ECR에 Docker 이미지 Push하기
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/culture-server:latest
+
+      - name: SSH로 EC2에 접속하기
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            docker stop culture-server || true
+            docker rm culture-server || true
+            docker pull ${{ steps.login-ecr.outputs.registry }}/culture-server:latest
+            docker run -d --name culture-server -p 8088:8088 ${{ steps.login-ecr.outputs.registry }}/culture-server:latest

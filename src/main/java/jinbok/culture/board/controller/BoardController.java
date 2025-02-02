@@ -18,7 +18,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/board/movie")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:80", "http://localhost:8080"}, allowCredentials = "true")
 public class BoardController {
 
     public final BoardService boardService;
