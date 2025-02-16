@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RestController
-@RequestMapping("/weather")
+@RequestMapping("/api/weather")
 @RequiredArgsConstructor
 @CrossOrigin(origins = {"http://localhost:80", "http://localhost:8080"}, allowCredentials = "true")
 public class WeatherController {

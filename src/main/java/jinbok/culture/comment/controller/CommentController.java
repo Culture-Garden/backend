@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comment/{boardId}")
+@RequestMapping("/api/comment/{boardId}")
 @CrossOrigin(origins = {"http://localhost:80", "http://localhost:8080"}, allowCredentials = "true")
 public class CommentController {
 
