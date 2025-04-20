@@ -1,2 +1,2 @@
 # 교양의 정원
-백엔드
+영화 게시판 Backend Repository
